@@ -1,0 +1,10 @@
+<h1>{{title}}</h1>
+
+    <div *ngFor="#row of input"> 
+        <ul class="checkbox-grid">
+        <div *ngFor="#cell of row"> 
+        <li><cell selected=false></cell></li>
+        </div>
+        </ul>
+        <br>
+    </div>
