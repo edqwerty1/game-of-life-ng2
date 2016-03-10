@@ -24,7 +24,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 core_1.Component({
                     selector: 'cell',
                     template: `
-    <div><input value={{selected}} type="checkbox" name="test" [(ngModel)]="selected"></div>
+    <div><input type="checkbox" name="test" [(ngModel)]="selected" ></div>
   `,
                     inputs: ['selected']
                 }), 

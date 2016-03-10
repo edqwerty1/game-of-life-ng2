@@ -1,4 +1,4 @@
-System.register(['angular2/core', './cell.component'], function(exports_1, context_1) {
+System.register(['angular2/core', './cell.component', './game-of-life.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', './cell.component'], function(exports_1, conte
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, cell_component_1;
+    var core_1, cell_component_1, game_of_life_service_1;
     var AppComponent;
     return {
         setters:[
@@ -19,15 +19,44 @@ System.register(['angular2/core', './cell.component'], function(exports_1, conte
             },
             function (cell_component_1_1) {
                 cell_component_1 = cell_component_1_1;
+            },
+            function (game_of_life_service_1_1) {
+                game_of_life_service_1 = game_of_life_service_1_1;
             }],
         execute: function() {
             let AppComponent = class AppComponent {
-                constructor() {
+                constructor(_gameOfLifeService) {
+                    this._gameOfLifeService = _gameOfLifeService;
                     this.title = 'Game of Life!';
                     this.input = [];
+                    this.length = 10;
+                    this.height = 5;
+                }
+                ;
+                createGrid() {
+                    this.input = [];
+                    for (let i = 0; i < this.height; i++) {
+                        this.input[i] = [];
+                        for (let j = 0; j < this.length; j++) {
+                            this.input[i][j] = Math.random() > 0.5;
+                        }
+                    }
                     this.input[0] = [true, true, false];
                     this.input[1] = [true, true, false];
                     this.input[2] = [true, true, false];
+                }
+                runGameOfLife() {
+                    setTimeout(() => {
+                        console.log(this.input);
+                        this.input = this._gameOfLifeService.processGrid(this.input);
+                        console.log(this.input);
+                    }, 500);
+                }
+                ;
+                startGame() {
+                    for (let i = 0; i < 50; i++) {
+                        this.runGameOfLife();
+                    }
                 }
             };
             AppComponent = __decorate([
@@ -35,9 +64,12 @@ System.register(['angular2/core', './cell.component'], function(exports_1, conte
                     selector: 'my-app',
                     templateUrl: 'app/app.component.html',
                     styleUrls: ['app/app.component.css'],
-                    directives: [cell_component_1.CellComponent]
+                    directives: [cell_component_1.CellComponent],
+                    providers: [
+                        game_of_life_service_1.GameOfLifeService
+                    ]
                 }), 
-                __metadata('design:paramtypes', [])
+                __metadata('design:paramtypes', [game_of_life_service_1.GameOfLifeService])
             ], AppComponent);
             exports_1("AppComponent", AppComponent);
         }
