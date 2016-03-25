@@ -28,6 +28,7 @@ System.register(['angular2/core', './cell.component', './game-of-life.service'],
                 constructor(_gameOfLifeService) {
                     this._gameOfLifeService = _gameOfLifeService;
                     this.title = 'Game of Life!';
+                    this.turnTime = 500;
                     this.input = [];
                     this.length = 10;
                     this.height = 5;
@@ -38,25 +39,26 @@ System.register(['angular2/core', './cell.component', './game-of-life.service'],
                     for (let i = 0; i < this.height; i++) {
                         this.input[i] = [];
                         for (let j = 0; j < this.length; j++) {
-                            this.input[i][j] = Math.random() > 0.5;
+                            this.input[i][j] = { selected: Math.random() > 0.5 };
                         }
                     }
-                    this.input[0] = [true, true, false];
-                    this.input[1] = [true, true, false];
-                    this.input[2] = [true, true, false];
                 }
                 runGameOfLife() {
-                    setTimeout(() => {
-                        console.log(this.input);
+                    this.timeoutHandler = setInterval(() => {
                         this.input = this._gameOfLifeService.processGrid(this.input);
-                        console.log(this.input);
-                    }, 500);
+                    }, this.turnTime);
                 }
                 ;
                 startGame() {
-                    for (let i = 0; i < 50; i++) {
+                    if (!this.timeoutHandler) {
+                        console.log("start");
                         this.runGameOfLife();
                     }
+                }
+                ;
+                stopGame() {
+                    clearInterval(this.timeoutHandler);
+                    this.timeoutHandler = null;
                 }
             };
             AppComponent = __decorate([
@@ -75,9 +77,4 @@ System.register(['angular2/core', './cell.component', './game-of-life.service'],
         }
     }
 });
-/*
-Copyright 2016 Google Inc. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/ 
 //# sourceMappingURL=app.component.js.map

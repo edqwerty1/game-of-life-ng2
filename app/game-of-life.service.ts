@@ -1,10 +1,10 @@
 import { Injectable } from 'angular2/core';
-
+import { Cell } from './cell';
 @Injectable()
 export class GameOfLifeService {
 
-    processGrid(grid: boolean[][]) {
-        var output: boolean[][] = [];
+    processGrid(grid: Cell[][]) {
+        var output: Cell[][] = [];
 
 
         for (var rowIndex in grid) {
@@ -14,15 +14,15 @@ export class GameOfLifeService {
 
                 if (this.checkAlive(grid, index, rowIndex)) {
                     if (numberOfNeighbours >= 2 && numberOfNeighbours < 4) {
-                        output[rowIndex][index] = true;
+                        output[rowIndex][index] = {selected: true};
                     } else {
-                        output[rowIndex][index] = false;
+                        output[rowIndex][index] = {selected: false};
                     }
                 } else {
                     if (numberOfNeighbours === 3) {
-                        output[rowIndex][index] = true;
+                        output[rowIndex][index] = {selected: true};
                     } else {
-                        output[rowIndex][index] = false;
+                        output[rowIndex][index] = {selected: false};
                     }
                 }
             }
@@ -32,7 +32,7 @@ export class GameOfLifeService {
         return output;
     };
 
-    private countNeighours(grid: boolean[][], x: any, y: any) {
+    private countNeighours(grid: Cell[][], x: any, y: any) {
         var numberOfNeighbours = 0;
 
         numberOfNeighbours += this.checkAlive(grid, +x - 1, +y - 1) ? 1 : 0;
@@ -47,9 +47,9 @@ export class GameOfLifeService {
         return numberOfNeighbours;
     };
 
-    private checkAlive(grid: boolean[][], x: any, y: any) {
+    private checkAlive(grid: Cell[][], x: any, y: any) {
         if (((x >= 0) && (y >= 0)) && (y < grid.length) && (x < grid[y].length)) {
-            return grid[y][x] === true;
+            return grid[y][x].selected === true;
         } else {
             return false;
         }

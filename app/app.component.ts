@@ -1,6 +1,7 @@
 import { Component } from 'angular2/core';
 import { CellComponent } from './cell.component';
 import { GameOfLifeService } from './game-of-life.service';
+import { Cell } from './cell';
 
 @Component({
   selector: 'my-app',
@@ -13,10 +14,11 @@ import { GameOfLifeService } from './game-of-life.service';
 })
 export class AppComponent {
   title = 'Game of Life!';
-  input:  boolean[][];
+  input:  Cell[][];
   length: number;
   height: number;
-  
+  turnTime: number = 500;
+  timeoutHandler: any; 
   constructor(private _gameOfLifeService: GameOfLifeService){
       this.input = [];
       this.length = 10;
@@ -28,33 +30,27 @@ export class AppComponent {
       for (let i = 0; i < this.height; i++){
           this.input[i] = [];
           for (let j = 0; j < this.length; j++){
-            this.input[i][j] = Math.random() > 0.5;
+            this.input[i][j] = {selected: Math.random() > 0.5 }
         } 
       }
-      this.input[0] =  [true, true, false];
-      this.input[1] =  [true, true, false];
-      this.input[2] =  [true, true, false];
   }
          
   runGameOfLife(){
-      setTimeout(() => {
-          console.log(this.input);
-          this.input = this._gameOfLifeService.processGrid(this.input);
-          console.log(this.input);
-      }, 500)
+      this.timeoutHandler = setInterval(() => {
+          this.input = this._gameOfLifeService.processGrid(this.input); 
+      }, this.turnTime)
   };
   
   startGame(){
-      for(let i = 0; i< 50; i++ ){
-          
+      if (!this.timeoutHandler){
+          console.log("start");
       this.runGameOfLife();
       }
+  };
+  
+  stopGame(){
+      clearInterval(this.timeoutHandler);
+      this.timeoutHandler = null;
   }
+  
 }
-
-
-/*
-Copyright 2016 Google Inc. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/

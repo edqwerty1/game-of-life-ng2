@@ -27,18 +27,18 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                             var numberOfNeighbours = this.countNeighours(grid, index, rowIndex);
                             if (this.checkAlive(grid, index, rowIndex)) {
                                 if (numberOfNeighbours >= 2 && numberOfNeighbours < 4) {
-                                    output[rowIndex][index] = true;
+                                    output[rowIndex][index] = { selected: true };
                                 }
                                 else {
-                                    output[rowIndex][index] = false;
+                                    output[rowIndex][index] = { selected: false };
                                 }
                             }
                             else {
                                 if (numberOfNeighbours === 3) {
-                                    output[rowIndex][index] = true;
+                                    output[rowIndex][index] = { selected: true };
                                 }
                                 else {
-                                    output[rowIndex][index] = false;
+                                    output[rowIndex][index] = { selected: false };
                                 }
                             }
                         }
@@ -62,7 +62,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 ;
                 checkAlive(grid, x, y) {
                     if (((x >= 0) && (y >= 0)) && (y < grid.length) && (x < grid[y].length)) {
-                        return grid[y][x] === true;
+                        return grid[y][x].selected === true;
                     }
                     else {
                         return false;

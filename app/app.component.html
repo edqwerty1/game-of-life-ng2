@@ -1,13 +1,15 @@
 <h1>{{title}}</h1>
 
 <button (click)="startGame()">Start</button>
+<button (click)="stopGame()">Stop</button>
 <input [(ngModel)]="height">height
 <input [(ngModel)]="length">length
+<input [(ngModel)]="turnTime">Turn Time
 <button (click)="createGrid()">Create Grid</button>
     <div *ngFor="#row of input"> 
         <ul class="checkbox-grid">
         <div *ngFor="#cell of row"> 
-        <li><cell [selected]="cell"></cell></li>
+        <li><cell [(selected)]="cell"></cell>top:  {{cell.selected}}</li>
         </div>
         </ul>
         <br>
